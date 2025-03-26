@@ -10,6 +10,7 @@
             background-color: #1e1e1e;
             color: white;
             text-align: center;
+            overflow: hidden;
         }
         h1 {
             color: #ffcc00;
@@ -47,14 +48,19 @@
             vertical-align: middle;
             margin-right: 5px;
         }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
     <h1>UNIVERSITAS BITCOIN MULIA CRYPTO WATCHLIST</h1>
-    <audio controls loop>
-        <source src="your-audio-file.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <canvas id="particles"></canvas>
     <table>
         <tr>
             <th>Crypto</th>
