@@ -36,11 +36,12 @@
         .buy-indicator {
             font-weight: bold;
             color: limegreen;
-            animation: blink 1s infinite alternate;
+            text-shadow: 0px 0px 10px limegreen;
         }
-        @keyframes blink {
-            from { opacity: 1; }
-            to { opacity: 0.5; }
+        .not-yet-indicator {
+            font-weight: bold;
+            color: yellow;
+            text-shadow: 0px 0px 10px yellow;
         }
         .crypto-logo {
             width: 20px;
@@ -138,7 +139,7 @@
             if (price === 'N/A') {
                 percentElement.innerText = 'N/A';
                 indicatorElement.innerText = '-';
-                indicatorElement.classList.remove("buy-indicator");
+                indicatorElement.className = "";
                 return;
             }
             
@@ -146,8 +147,14 @@
             const percentage = ((midTarget - price) / midTarget) * 100;
             
             percentElement.innerText = `${percentage.toFixed(2)}%`;
-            indicatorElement.innerText = (price >= minTarget && price <= maxTarget) ? "BUY" : "-";
-            indicatorElement.classList.toggle("buy-indicator", indicatorElement.innerText === "BUY");
+            
+            if (price >= minTarget && price <= maxTarget) {
+                indicatorElement.innerText = "BUY";
+                indicatorElement.className = "buy-indicator";
+            } else {
+                indicatorElement.innerText = "NOT YET";
+                indicatorElement.className = "not-yet-indicator";
+            }
         }
 
         setInterval(fetchPrices, 5000);
