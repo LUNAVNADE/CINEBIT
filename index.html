@@ -51,6 +51,10 @@
 </head>
 <body>
     <h1>UNIVERSITAS BITCOIN MULIA CRYPTO WATCHLIST</h1>
+    <audio controls loop>
+        <source src="your-audio-file.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <table>
         <tr>
             <th>Crypto</th>
@@ -60,7 +64,7 @@
             <th>Indicator</th>
         </tr>
         <tr>
-            <td><img class="crypto-logo" src="https://assets.coingecko.com/coins/images/738/small/eos.png" alt="EOS"> $EOS</td>
+            <td><img class="crypto-logo" src="https://eosnetwork.com/wp-content/uploads/2021/12/eos-logo.png" alt="EOS"> $EOS</td>
             <td id="eos-price">-</td>
             <td>0.47 - 0.57</td>
             <td id="eos-percent">-</td>
@@ -74,7 +78,7 @@
             <td id="doge-indicator">-</td>
         </tr>
         <tr>
-            <td><img class="crypto-logo" src="https://assets.coingecko.com/coins/images/25709/small/BONK.jpg" alt="BONK"> $BONK</td>
+            <td><img class="crypto-logo" src="https://altcoinsbox.com/wp-content/uploads/2023/01/bonk-logo.png" alt="BONK"> $BONK</td>
             <td id="bonk-price">-</td>
             <td>0.00001023 - 0.00001100</td>
             <td id="bonk-percent">-</td>
@@ -122,7 +126,6 @@
         }
 
         function updateRow(coin, price, minTarget, maxTarget) {
-            const priceElement = document.getElementById(`${coin}-price`);
             const percentElement = document.getElementById(`${coin}-percent`);
             const indicatorElement = document.getElementById(`${coin}-indicator`);
             
@@ -138,7 +141,6 @@
             
             percentElement.innerText = `${percentage.toFixed(2)}%`;
             indicatorElement.innerText = (price >= minTarget && price <= maxTarget) ? "BUY" : "-";
-            
             indicatorElement.classList.toggle("buy-indicator", indicatorElement.innerText === "BUY");
         }
 
