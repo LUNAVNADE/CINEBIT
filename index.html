@@ -148,8 +148,38 @@
                 console.error("Error fetching prices:", error);
             }
         }
-        setInterval(fetchPrices, 5000);
-        fetchPrices();
+
+        function checkBuySignal(eosPrice, dogePrice, bonkPrice, api3Price) {
+            updateRow("eos", eosPrice, 0.47, 0.57);
+            updateRow("doge", dogePrice, 0.127, 0.136);
+            updateRow("bonk", bonkPrice, 0.00001023, 0.00001100);
+            updateRow("api3", api3Price, 0.6949, 0.7720);
+        }
+
+        function updateRow(coin, price, minTarget, maxTarget) {
+            const percentElement = document.getElementById(`${coin}-percent`);
+            const indicatorElement = document.getElementById(`${coin}-indicator`);
+            
+            if (price === 'N/A') {
+                percentElement.innerText = 'N/A';
+                indicatorElement.innerText = '-';
+                indicatorElement.className = "";
+                return;
+            }
+            
+            const midTarget = (minTarget + maxTarget) / 2;
+            const percentage = ((midTarget - price) / midTarget) * 100;
+            
+            percentElement.innerText = `${percentage.toFixed(2)}%`;
+            
+            if (price >= minTarget && price <= maxTarget) {
+                indicatorElement.innerText = "BUY";
+                indicatorElement.className = "buy-indicator";
+            } else {
+                indicatorElement.innerText = "NOT YET";
+                indicatorElement.className = "not-yet-indicator";
+            }
+        }
     </script>
 </body>
 </html>
