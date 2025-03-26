@@ -15,6 +15,26 @@
         h1 {
             color: #ffcc00;
         }
+        .crypto-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .crypto-box {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
+            text-align: center;
+            width: 150px;
+        }
+        .crypto-box img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-bottom: 5px;
+        }
         table {
             width: 70%;
             margin: 20px auto;
@@ -49,19 +69,27 @@
             vertical-align: middle;
             margin-right: 5px;
         }
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
     <h1>UNIVERSITAS BITCOIN MULIA CRYPTO WATCHLIST</h1>
-    <canvas id="particles"></canvas>
+    <div class="crypto-boxes">
+        <div class="crypto-box">
+            <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
+            <p>Bitcoin</p>
+            <p id="btc-price">-</p>
+        </div>
+        <div class="crypto-box">
+            <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH">
+            <p>Ethereum</p>
+            <p id="eth-price">-</p>
+        </div>
+        <div class="crypto-box">
+            <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
+            <p>Solana</p>
+            <p id="sol-price">-</p>
+        </div>
+    </div>
     <table>
         <tr>
             <th>Crypto</th>
@@ -84,76 +112,25 @@
             <td id="doge-percent">-</td>
             <td id="doge-indicator">-</td>
         </tr>
-        <tr>
-            <td><img class="crypto-logo" src="https://altcoinsbox.com/wp-content/uploads/2023/01/bonk-logo.png" alt="BONK"> $BONK</td>
-            <td id="bonk-price">-</td>
-            <td>0.00001023 - 0.00001100</td>
-            <td id="bonk-percent">-</td>
-            <td id="bonk-indicator">-</td>
-        </tr>
-        <tr>
-            <td><img class="crypto-logo" src="https://assets.coingecko.com/coins/images/13256/small/api3.jpg" alt="API3"> $API3</td>
-            <td id="api3-price">-</td>
-            <td>0.6949 - 0.7720</td>
-            <td id="api3-percent">-</td>
-            <td id="api3-indicator">-</td>
-        </tr>
     </table>
 
     <script>
         async function fetchPrices() {
             try {
-                const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=eos,dogecoin,bonk,api3&vs_currencies=usd");
+                const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,eos,dogecoin,bonk,api3&vs_currencies=usd");
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
                 
-                const eosPrice = data.eos?.usd ?? 'N/A';
-                const dogePrice = data.dogecoin?.usd ?? 'N/A';
-                const bonkPrice = data.bonk?.usd ?? 'N/A';
-                const api3Price = data.api3?.usd ?? 'N/A';
+                document.getElementById("btc-price").innerText = `$${data.bitcoin?.usd ?? 'N/A'}`;
+                document.getElementById("eth-price").innerText = `$${data.ethereum?.usd ?? 'N/A'}`;
+                document.getElementById("sol-price").innerText = `$${data.solana?.usd ?? 'N/A'}`;
                 
-                document.getElementById("eos-price").innerText = eosPrice;
-                document.getElementById("doge-price").innerText = dogePrice;
-                document.getElementById("bonk-price").innerText = bonkPrice;
-                document.getElementById("api3-price").innerText = api3Price;
-
-                checkBuySignal(eosPrice, dogePrice, bonkPrice, api3Price);
+                document.getElementById("eos-price").innerText = `$${data.eos?.usd ?? 'N/A'}`;
+                document.getElementById("doge-price").innerText = `$${data.dogecoin?.usd ?? 'N/A'}`;
             } catch (error) {
                 console.error("Error fetching prices:", error);
-            }
-        }
-
-        function checkBuySignal(eosPrice, dogePrice, bonkPrice, api3Price) {
-            updateRow("eos", eosPrice, 0.47, 0.57);
-            updateRow("doge", dogePrice, 0.127, 0.136);
-            updateRow("bonk", bonkPrice, 0.00001023, 0.00001100);
-            updateRow("api3", api3Price, 0.6949, 0.7720);
-        }
-
-        function updateRow(coin, price, minTarget, maxTarget) {
-            const percentElement = document.getElementById(`${coin}-percent`);
-            const indicatorElement = document.getElementById(`${coin}-indicator`);
-            
-            if (price === 'N/A') {
-                percentElement.innerText = 'N/A';
-                indicatorElement.innerText = '-';
-                indicatorElement.className = "";
-                return;
-            }
-            
-            const midTarget = (minTarget + maxTarget) / 2;
-            const percentage = ((midTarget - price) / midTarget) * 100;
-            
-            percentElement.innerText = `${percentage.toFixed(2)}%`;
-            
-            if (price >= minTarget && price <= maxTarget) {
-                indicatorElement.innerText = "BUY";
-                indicatorElement.className = "buy-indicator";
-            } else {
-                indicatorElement.innerText = "NOT YET";
-                indicatorElement.className = "not-yet-indicator";
             }
         }
 
