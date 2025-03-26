@@ -112,8 +112,21 @@
             <td id="doge-percent">-</td>
             <td id="doge-indicator">-</td>
         </tr>
+        <tr>
+            <td><img class="crypto-logo" src="https://assets.coingecko.com/coins/images/25709/small/BONK.jpg" alt="BONK"> $BONK</td>
+            <td id="bonk-price">-</td>
+            <td>0.00001023 - 0.00001100</td>
+            <td id="bonk-percent">-</td>
+            <td id="bonk-indicator">-</td>
+        </tr>
+        <tr>
+            <td><img class="crypto-logo" src="https://assets.coingecko.com/coins/images/13256/small/api3.jpg" alt="API3"> $API3</td>
+            <td id="api3-price">-</td>
+            <td>0.6949 - 0.7720</td>
+            <td id="api3-percent">-</td>
+            <td id="api3-indicator">-</td>
+        </tr>
     </table>
-
     <script>
         async function fetchPrices() {
             try {
@@ -129,11 +142,12 @@
                 
                 document.getElementById("eos-price").innerText = `$${data.eos?.usd ?? 'N/A'}`;
                 document.getElementById("doge-price").innerText = `$${data.dogecoin?.usd ?? 'N/A'}`;
+                document.getElementById("bonk-price").innerText = `$${data.bonk?.usd ?? 'N/A'}`;
+                document.getElementById("api3-price").innerText = `$${data.api3?.usd ?? 'N/A'}`;
             } catch (error) {
                 console.error("Error fetching prices:", error);
             }
         }
-
         setInterval(fetchPrices, 5000);
         fetchPrices();
     </script>
