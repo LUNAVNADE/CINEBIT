@@ -1,191 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Watchlist</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: white;
-            text-align: center;
-            overflow: hidden;
-        }
-        h1 {
-            color: #ffcc00;
-        }
-        .crypto-boxes {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .crypto-box {
-            background: #2a2a2a;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
-            text-align: center;
-            width: 150px;
-        }
-        .crypto-box img {
-            width: 30px;
-            height: 30px;
-            vertical-align: middle;
-            margin-bottom: 5px;
-        }
-        table {
-            width: 70%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background: #2a2a2a;
-            box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.5);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        th, td {
-            border: 1px solid #444;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background: #ffcc00;
-            color: black;
-        }
-        .buy-indicator {
-            font-weight: bold;
-            color: limegreen;
-            text-shadow: 0px 0px 10px limegreen;
-        }
-        .not-yet-indicator {
-            font-weight: bold;
-            color: yellow;
-            text-shadow: 0px 0px 10px yellow;
-        }
-        .crypto-logo {
-            width: 20px;
-            height: 20px;
-            vertical-align: middle;
-            margin-right: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CINEBIT</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>UNIVERSITAS BITCOIN MULIA CRYPTO WATCHLIST</h1>
-    <div class="crypto-boxes">
-        <div class="crypto-box">
-            <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
-            <p>Bitcoin</p>
-            <p id="btc-price">-</p>
-        </div>
-        <div class="crypto-box">
-            <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH">
-            <p>Ethereum</p>
-            <p id="eth-price">-</p>
-        </div>
-        <div class="crypto-box">
-            <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
-            <p>Solana</p>
-            <p id="sol-price">-</p>
-        </div>
+<nav class="navbar">
+  <div class="logo">
+    <img src="images/cinebit.png" alt="cinebit" />
+    <div class="floating-location" onclick="toggleLocationDropdown()">
+      📍 <span id="selectedLocation">Location</span>
     </div>
-    <table>
-        <tr>
-            <th>Crypto</th>
-            <th>Current Price ($)</th>
-            <th>Buy Range ($)</th>
-            <th>% to Target</th>
-            <th>Indicator</th>
-        </tr>
-        <tr>
-            <td>$EOS</td>
-            <td id="eos-price">-</td>
-            <td>0.47 - 0.57</td>
-            <td id="eos-percent">-</td>
-            <td id="eos-indicator">-</td>
-        </tr>
-        <tr>
-            <td>$DOGE</td>
-            <td id="doge-price">-</td>
-            <td>0.127 - 0.136</td>
-            <td id="doge-percent">-</td>
-            <td id="doge-indicator">-</td>
-        </tr>
-        <tr>
-            <td>$BONK</td>
-            <td id="bonk-price">-</td>
-            <td>0.00001023 - 0.00001100</td>
-            <td id="bonk-percent">-</td>
-            <td id="bonk-indicator">-</td>
-        </tr>
-        <tr>
-            <td>$API3</td>
-            <td id="api3-price">-</td>
-            <td>0.9526 - 0.8775</td>
-            <td id="api3-percent">-</td>
-            <td id="api3-indicator">-</td>
-        </tr>
-    </table>
-    <script>
-        async function fetchPrices() {
-    try {
-        const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,eos,dogecoin,bonk,api3&vs_currencies=usd");
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        
-        document.getElementById("btc-price").innerText = `$${data.bitcoin?.usd ?? 'N/A'}`;
-        document.getElementById("eth-price").innerText = `$${data.ethereum?.usd ?? 'N/A'}`;
-        document.getElementById("sol-price").innerText = `$${data.solana?.usd ?? 'N/A'}`;
-        
-        document.getElementById("eos-price").innerText = `$${data.eos?.usd ?? 'N/A'}`;
-        document.getElementById("doge-price").innerText = `$${data.dogecoin?.usd ?? 'N/A'}`;
-        document.getElementById("bonk-price").innerText = `$${data.bonk?.usd ?? 'N/A'}`;
-        document.getElementById("api3-price").innerText = `$${data.api3?.usd ?? 'N/A'}`;
+  </div>
+  <div class="location-dropdown" id="locationDropdown">
+    <input type="text" id="locationSearch" placeholder="Search city..." onkeyup="filterCities()" />
+    <ul id="cityList"></ul>
+  </div>
+  <div class="nav-buttons">
+    <a href="#" onclick="openModal('loginModal')">Login</a>
+    <button class="btn-create" onclick="openModal('registerModal')">Make an Account</button>
+  </div>
+</nav>  
 
-        checkBuySignal(data.eos?.usd, data.dogecoin?.usd, data.bonk?.usd, data.api3?.usd);
-    } catch (error) {
-        console.error("Error fetching prices:", error);
+  <header class="hero">
+    <h1>Good Afternoon, USER</h1>
+    <input type="text" placeholder="Search movies or cinemas..." class="search-bar" />
+    <div class="quick-links">
+      <div class="link">🎬 Movies</div>
+      <div class="link">🍿 Food</div>
+      <div class="link">📦 Private Booking</div>
+    </div>
+  </header>
+
+  <section class="now-playing">
+    <h2>Now Playing</h2>
+    <div class="movies">
+      <div class="movie">
+        <img src="http://www.impawards.com/2025/posters/mission_impossible__the_final_reckoning_ver2.jpg" alt="mission impossible">
+        <p>Mission: Impossible - The Final Reckoning (2025)</p>
+      </div>
+      <div class="movie">
+        <img src="http://www.impawards.com/2025/posters/lilo_and_stitch.jpg" alt="lilo and stitch">
+        <p>Lilo & Stitch (2025)</p>
+      </div>
+      <div class="movie">
+        <img src="https://upload.wikimedia.org/wikipedia/id/8/88/Karate_Kid_Legends_Poster.jpg" alt="karate kids">
+        <p>Karate Kids: Legends</p>
+      </div>
+      <div class="movie">
+        <img src="http://www.impawards.com/2025/posters/how_to_train_your_dragon.jpg" alt="how to train your dragon">
+        <p>How to Train Your Dragon (2025)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- buat login -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" />
+        <small class="error" id="loginEmailError"></small>
+
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <small class="error" id="loginPasswordError"></small>
+
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- buat bikin akun -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('registerModal')">&times;</span>
+      <h2>Create Account</h2>
+      <form id="registerForm">
+        <input type="text" id="regName" placeholder="Name" />
+        <small class="error" id="regNameError"></small>
+
+        <input type="email" id="regEmail" placeholder="Email" />
+        <small class="error" id="regEmailError"></small>
+
+        <input type="password" id="regPassword" placeholder="Password" />
+        <small class="error" id="regPasswordError"></small>
+
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
     }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const login = document.getElementById('loginModal');
+      const register = document.getElementById('registerModal');
+      if (event.target == login) login.style.display = 'none';
+      if (event.target == register) register.style.display = 'none';
+    }
+
+    //validasi form buat login
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      let valid = true;
+
+      const email = document.getElementById("loginEmail");
+      const password = document.getElementById("loginPassword");
+      const emailError = document.getElementById("loginEmailError");
+      const passwordError = document.getElementById("loginPasswordError");
+
+      emailError.textContent = "";
+      passwordError.textContent = "";
+
+      if (!email.value) {
+        emailError.textContent = "Email is required";
+        valid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        emailError.textContent = "Invalid email format";
+        valid = false;
+      }
+
+      if (!password.value) {
+        passwordError.textContent = "Password is required";
+        valid = false;
+      } else if (password.value.length < 4) {
+        passwordError.textContent = "Password must be at least 4 characters";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    //validasi
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      let valid = true;
+
+      const name = document.getElementById("regName");
+      const email = document.getElementById("regEmail");
+      const password = document.getElementById("regPassword");
+
+      const nameError = document.getElementById("regNameError");
+      const emailError = document.getElementById("regEmailError");
+      const passwordError = document.getElementById("regPasswordError");
+
+      nameError.textContent = "";
+      emailError.textContent = "";
+      passwordError.textContent = "";
+
+      if (!name.value) {
+        nameError.textContent = "Name is required";
+        valid = false;
+      }
+
+      if (!email.value) {
+        emailError.textContent = "Email is required";
+        valid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        emailError.textContent = "Invalid email format.";
+        valid = false;
+      }
+
+      if (!password.value) {
+        passwordError.textContent = "Password is required";
+        valid = false;
+      } else if (password.value.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    const southeastAsianCity = [
+    "Jakarta", "Kuala Lumpur", "Singapore", "Bangkok", "Manila", 
+    "Hanoi", "Vientiane", "Naypyidaw ", "Phnom Penh"
+  ];
+
+  const dropdown = document.getElementById("locationDropdown");
+  const cityList = document.getElementById("cityList");
+  const selectedLocation = document.getElementById("selectedLocation");
+
+  function toggleLocationDropdown() {
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    populateCityList(southeastAsianCity);
+  }
+
+  function populateCityList(city) {
+    cityList.innerHTML = "";
+    city.forEach(city => {
+      const li = document.createElement("li");
+      li.textContent = city;
+      li.onclick = function () {
+        selectedLocation.textContent = city;
+        dropdown.style.display = "none";
+        updateGreeting(city); // <-- this is new
+      };
+      cityList.appendChild(li);
+    });
+  }
+
+  function filterCities() {
+    const query = document.getElementById("locationSearch").value.toLowerCase();
+    const filtered = southeastAsianCity.filter(city =>
+      city.toLowerCase().includes(query)
+    );
+    populateCityList(filtered);
+  }
+
+  window.addEventListener("click", function (e) {
+    if (!e.target.closest(".floating-location") && !e.target.closest(".location-dropdown")) {
+      dropdown.style.display = "none";
+    }
+  });
+  function updateGreeting(city) {
+  const greetingMap = {
+    "Jakarta": "Selamat Sore",
+    "Kuala Lumpur": "Selamat Petang",
+    "Singapore": "Good Afternoon",
+    "Bangkok": "สวัสดีตอนบ่าย",
+    "Manila": "Magandang Hapon",
+    "Hanoi": "Chào buổi chiều",
+    "Vientiane": "ສະບາຍດີຕອນແລງ",
+    "Naypyidaw ": "မင်္ဂလာနံနက်ခင်းပါ",
+    "Phnom Penh": "អរុណសួស្តី"
+  };
+
+  const greetingText = greetingMap[city] || "Good Afternoon";
+  document.querySelector("header.hero h1").textContent = `${greetingText}, USER`;
 }
-
-setInterval(fetchPrices, 10000);
-
-fetchPrices();
-
-        function checkBuySignal(eosPrice, dogePrice, bonkPrice, api3Price) {
-            updateRow("eos", eosPrice, 0.47, 0.57);
-            updateRow("doge", dogePrice, 0.127, 0.136);
-            updateRow("bonk", bonkPrice, 0.00001023, 0.00001100);
-            updateRow("api3", api3Price, 0.8775, 0.9256);
-        }
-
-        function updateRow(coin, price, minTarget, maxTarget) {
-            const percentElement = document.getElementById(`${coin}-percent`);
-            const indicatorElement = document.getElementById(`${coin}-indicator`);
-            
-            if (price === 'N/A') {
-                percentElement.innerText = 'N/A';
-                indicatorElement.innerText = '-';
-                indicatorElement.className = "";
-                return;
-            }
-            
-            const midTarget = (minTarget + maxTarget) / 2;
-            const percentage = ((midTarget - price) / midTarget) * 100;
-            
-            percentElement.innerText = `${percentage.toFixed(2)}%`;
-            
-            if (price >= minTarget && price <= maxTarget) {
-                indicatorElement.innerText = "BUY";
-                indicatorElement.className = "buy-indicator";
-            } else {
-                indicatorElement.innerText = "NOT YET";
-                indicatorElement.className = "not-yet-indicator";
-            }
-        }
-    </script>
+  </script>
 </body>
 </html>
