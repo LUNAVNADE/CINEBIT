@@ -11,9 +11,10 @@
 <body>
 <nav class="navbar">
   <div class="logo">
-    <img src="images/cinebit.png" alt="cinebit" />
+    <img src="images/logo/cinebit.png" alt="cinebit" />
     <div class="floating-location" onclick="toggleLocationDropdown()">
-      📍 <span id="selectedLocation">Location</span>
+      <img id="locationIcon" src="images/flags/default.png" alt="flag" width="24" height="16" style="vertical-align: middle; margin-right: 5px;" />
+      <span id="selectedLocation">Location</span>
     </div>
   </div>
   <div class="location-dropdown" id="locationDropdown">
@@ -30,19 +31,15 @@
     <h1>Good Afternoon, USER</h1>
     <input type="text" placeholder="Search movies or cinemas..." class="search-bar" />
     <div class="quick-links">
-      <div class="quick-links">
-  <div class="link">
-    <i class="fas fa-film" style="color: #00796b; font-size: 32px;"></i>
-    Movies
-  </div>
-  <div class="link">
-    <i class="fas fa-utensils" style="color: #00796b; font-size: 32px;"></i>
-    Food
-  </div>
-  <div class="link">
-    <i class="fas fa-ticket-alt" style="color: #00796b; font-size: 32px;"></i>
-    Private Booking
-  </div>
+      <a href="movies.html" class="link">
+        <i class="fas fa-film" style="color: #00796b; font-size: 32px;"></i>
+        Movies
+      </a>
+      <a href="foods.html" class="link">
+        <i class="fas fa-utensils" style="color: #00796b; font-size: 32px;"></i>
+        Food
+      </a>
+    </div>
 </div>
     </div> 
   <section class="now-playing">
@@ -58,7 +55,7 @@
       </div>
       <div class="movie">
         <img src="https://upload.wikimedia.org/wikipedia/id/8/88/Karate_Kid_Legends_Poster.jpg" alt="karate kids">
-        <p>Karate Kids: Legends</p>
+        <p>Karate Kids: Legends (2025)</p>
       </div>
       <div class="movie">
         <img src="https://upload.wikimedia.org/wikipedia/en/8/80/How_To_Train_Your_Dragon_2025_Poster.jpg" alt="how to train your dragon">
@@ -194,7 +191,7 @@
 
     const southeastAsianCity = [
     "Jakarta", "Kuala Lumpur", "Singapore", "Bangkok", "Manila", 
-    "Hanoi", "Vientiane", "Naypyidaw ", "Phnom Penh"
+    "Hanoi", "Vientiane", "Naypyidaw", "Phnom Penh"
   ];
 
   const dropdown = document.getElementById("locationDropdown");
@@ -214,7 +211,8 @@
       li.onclick = function () {
         selectedLocation.textContent = city;
         dropdown.style.display = "none";
-        updateGreeting(city); // <-- this is new
+        updateGreeting(city);
+        updateFlagIcon(city);
       };
       cityList.appendChild(li);
     });
@@ -244,10 +242,25 @@
     "Vientiane": "ສະບາຍດີຕອນແລງ",
     "Naypyidaw": "မင်္ဂလာနံနက်ခင်းပါ",
     "Phnom Penh": "អរុណសួស្តី"
-  };
+    };
 
-  const greetingText = greetingMap[city] || "Good Afternoon";
-  document.querySelector("header.hero h1").textContent = `${greetingText}, USER`;
+    const greetingText = greetingMap[city] || "Good Afternoon";
+    document.querySelector("header.hero h1").textContent = `${greetingText}, USER`;
+  }
+  function updateFlagIcon(city) {
+  const iconMap = {
+    "Jakarta": "id.jpg",
+    "Kuala Lumpur": "my.jpg",
+    "Singapore": "sg.jpg",
+    "Bangkok": "th.jpg",
+    "Manila": "ph.jpg",
+    "Hanoi": "vn.jpg",
+    "Vientiane": "la.jpg",
+    "Naypyidaw": "mm.jpg",
+    "Phnom Penh": "kh.jpg"
+    };
+  const flagFile = iconMap[city] || "default.jpg";
+  document.getElementById("locationIcon").src = `flags/${flagFile}`;
 }
   </script>
 </body>
