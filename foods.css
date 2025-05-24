@@ -1,0 +1,59 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.page-title {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding: 40px;
+}
+
+.food-item {
+  text-align: center;
+}
+
+.food-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+.food-item img:hover {
+  transform: scale(1.05);
+}
+
+.food-item p {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Responsive layout */
+@media (max-width: 1200px) {
+  .food-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .food-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .food-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
