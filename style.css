@@ -170,6 +170,20 @@ body {
   padding: 2rem 1rem;
 }
 
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+}
+
+.movie-card {
+  width: 220px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
 .now-playing h2 {
   text-align: center;
   font-size: 1.5rem;
@@ -180,7 +194,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 24px;
+  padding: 20px;
 }
 
 .movie {
@@ -196,6 +211,77 @@ body {
 .movie p {
   margin-top: 0.5rem;
   font-weight: 500;
+}
+
+.movie-card {
+  width: 220px;
+}
+
+.poster-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.poster {
+  width: 100%;
+  transition: transform 0.4s ease;
+  display: block;
+  border-radius: 12px;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(255,255,255,0.9), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.poster-container:hover .poster {
+  transform: scale(1.1);
+}
+
+.poster-container:hover .overlay {
+  opacity: 1;
+}
+
+.trailer-btn {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+}
+
+.trailer-btn:hover {
+  background-color: #004d40;
+}
+
+.movie-info {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.movie-title {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 600;
 }
 
 .modal {
