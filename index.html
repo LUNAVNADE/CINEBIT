@@ -13,7 +13,7 @@
   <div class="logo">
     <img src="images/logo/cinebit.png" alt="cinebit" />
     <div class="floating-location" onclick="toggleLocationDropdown()">
-      <img id="locationIcon" src="images/flags/default.png" alt="flag" width="24" height="16" style="vertical-align: middle; margin-right: 5px;" />
+      <img id="locationIcon" class="flag-icon" src="images/flags/default.png" alt="flag" />
       <span id="selectedLocation">Location</span>
     </div>
   </div>
@@ -24,6 +24,10 @@
   <div class="nav-buttons">
     <a href="#" onclick="openModal('loginModal')">Login</a>
     <button class="btn-create" onclick="openModal('registerModal')">Make an Account</button>
+    <label class="theme-switch">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider"></span>
+    </label>
   </div>
 </nav>  
 
@@ -191,7 +195,7 @@
 
     const southeastAsianCity = [
     "Jakarta", "Kuala Lumpur", "Singapore", "Bangkok", "Manila", 
-    "Hanoi", "Vientiane", "Naypyidaw", "Phnom Penh"
+    "Hanoi"
   ];
 
   const dropdown = document.getElementById("locationDropdown");
@@ -213,10 +217,10 @@
         dropdown.style.display = "none";
         updateGreeting(city);
         updateFlagIcon(city);
+        localStorage.setItem("selectedCity", city);
       };
       cityList.appendChild(li);
     });
-  }
 
   function filterCities() {
     const query = document.getElementById("locationSearch").value.toLowerCase();
@@ -231,18 +235,55 @@
       dropdown.style.display = "none";
     }
   });
-  function updateGreeting(city) {
-  const greetingMap = {
-    "Jakarta": "Selamat Sore",
-    "Kuala Lumpur": "Selamat Petang",
-    "Singapore": "Good Afternoon",
-    "Bangkok": "สวัสดีตอนบ่าย",
-    "Manila": "Magandang Hapon",
-    "Hanoi": "Chào buổi chiều",
-    "Vientiane": "ສະບາຍດີຕອນແລງ",
-    "Naypyidaw": "မင်္ဂလာနံနက်ခင်းပါ",
-    "Phnom Penh": "អរុណសួស្តី"
-    };
+    function updateGreeting(city) {
+      const hour = new Date().getHours();
+      let baseGreeting = "Good Afternoon";
+
+      if (hour >= 5 && hour < 12) {
+        baseGreeting = "Good Morning";
+      } else if (hour >= 12 && hour < 17) {
+        baseGreeting = "Good Afternoon";
+      } else if (hour >= 17 && hour < 21) {
+        baseGreeting = "Good Evening";
+      } else {
+        baseGreeting = "Good Night";
+      }
+
+      const greetingMap = {
+        "Jakarta": {
+          "Good Morning": "Selamat Pagi",
+          "Good Afternoon": "Selamat Sore",
+          "Good Evening": "Selamat Malam",
+        },
+        "Kuala Lumpur": {
+          "Good Morning": "Selamat Pagi",
+          "Good Afternoon": "Selamat Petang",
+          "Good Evening": "Selamat Malam",
+        },
+        "Singapore": {},
+        "Bangkok": {
+          "Good Afternoon": "สวัสดีตอนบ่าย",
+          "Good Evening": "สวัสดีตอนเย็น",
+          "Good Morning": "สวัสดีตอนเช้า",
+        },
+        "Manila": {
+          "Good Morning": "Magandang Umaga",
+          "Good Afternoon": "Magandang Hapon",
+          "Good Evening": "Magandang Gabi",
+          "Good Night": "Magandang Gabi"
+        },
+        "Hanoi": {
+          "Good Morning": "Chào buổi sáng",
+          "Good Afternoon": "Chào buổi chiều",
+          "Good Evening": "Chào buổi tối",
+        }
+      };
+
+  const translations = greetingMap[city] || {};
+  const localizedGreeting = translations[baseGreeting] || baseGreeting;
+
+  document.querySelector("header.hero h1").textContent = `${localizedGreeting}, USER`;
+}
 
     const greetingText = greetingMap[city] || "Good Afternoon";
     document.querySelector("header.hero h1").textContent = `${greetingText}, USER`;
@@ -254,14 +295,40 @@
     "Singapore": "sg.jpg",
     "Bangkok": "th.jpg",
     "Manila": "ph.jpg",
-    "Hanoi": "vn.jpg",
-    "Vientiane": "la.jpg",
-    "Naypyidaw": "mm.jpg",
-    "Phnom Penh": "kh.jpg"
+    "Hanoi": "vn.jpg"
     };
-  const flagFile = iconMap[city] || "default.jpg";
-  document.getElementById("locationIcon").src = `flags/${flagFile}`;
-}
+  const flagFile = iconMap[city] || "default.jpg"
+  document.getElementById("locationIcon").src = `images/flags/${flagFile}`;
+  }
+
+  const savedCity = null;
+  if (savedCity) {
+    selectedLocation.textContent = savedCity;
+    updateGreeting(savedCity);
+    updateFlagIcon(savedCity);
+  } else {
+    selectedLocation.textContent = "Select your location";
+    document.getElementById("locationIcon").src = "images/flags/default.jpg";
+  }
+
+  const toggleSwitch = document.getElementById("themeToggle");
+  toggleSwitch.addEventListener("change", function () {
+    if (this.checked) {
+      document.body.classList.add("dark-mode");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem("theme", "light");
+    }
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      toggleSwitch.checked = true;
+    }
+  });
   </script>
 </body>
 </html>
